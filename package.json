@@ -14,5 +14,9 @@
   "homepage": "https://github.com/hs04111/wetube#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15"
   }
 }
