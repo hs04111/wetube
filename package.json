@@ -1,0 +1,16 @@
+{
+  "name": "wetube",
+  "version": "1.0.0",
+  "description": "The best video player!",
+  "main": "index.js",  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hs04111/wetube.git"
+  },
+  "author": "hs04111",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hs04111/wetube/issues"
+  },
+  "homepage": "https://github.com/hs04111/wetube#readme"
+}
