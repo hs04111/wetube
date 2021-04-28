@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/hs04111/wetube.git"
   },
+  "scripts": {
+    "dev": "nodemon --exec babel-node index.js"
+  },
   "author": "hs04111",
   "license": "MIT",
   "bugs": {
@@ -17,6 +20,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
-    "@babel/preset-env": "^7.13.15"
+    "@babel/node": "^7.13.13",
+    "@babel/preset-env": "^7.13.15",
+    "nodemon": "^2.0.7"
   }
 }
