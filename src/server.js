@@ -1,17 +1,17 @@
 import express from 'express';
 import morgan from 'morgan';
+import userRouter from './routers/userRouter';
+import globalRouter from './routers/globalRouter';
+import videoRouter from './routers/videoRouter';
 
 const PORT = 4000;
-const logger = morgan('dev')
-
+const logger = morgan('dev');
 const app = express();
-
-const handleHome = (req, res) => {
-    return res.send('Hello World!');
-};
-
 app.use(logger);
-app.get('/', handleHome);
+
+app.use('/', globalRouter);
+app.use('/videos', videoRouter);
+app.use('/users', userRouter);
 
 const handleListening = () => console.log(`Server listening on port http://localhost:${PORT}`);
 
