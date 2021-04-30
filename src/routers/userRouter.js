@@ -1,9 +1,9 @@
 import express from 'express';
+import { login, edit } from '../controllers/userController';
 
 const userRouter = express.Router();
 
-const handleLogin = (req, res) => res.send('Login Here!');
-
-userRouter.get('/login', handleLogin);
+userRouter.get('/login', login);
+userRouter.get('/edit', edit);
 
 export default userRouter;
