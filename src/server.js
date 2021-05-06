@@ -11,6 +11,7 @@ app.use(logger);
 
 app.set('views', process.cwd() + '/src/views');
 app.set('view engine', 'pug');
+
 app.use('/', globalRouter);
 app.use('/videos', videoRouter);
 app.use('/users', userRouter);
