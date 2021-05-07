@@ -1,0 +1,6 @@
+extends base.pug
+
+block content
+    form(method="POST")
+        input(placeholder="Change your video's title" value=video.title name="title" required)
+        input(value="save" type="submit" )
