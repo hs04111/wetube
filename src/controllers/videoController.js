@@ -1,7 +1,7 @@
 const videos = [
     {
         title: 'First Video',
-        views: 13,
+        views: 1,
         id: 1
     },
     {
