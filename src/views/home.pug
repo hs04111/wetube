@@ -1,11 +1,11 @@
 extends base.pug
-
+include mixins/video.pug
 
 
 block content 
     h1 Home
     ul
         each video in videos 
-            li=video
+            +video(video)
         else 
             li Sorry Nothing Found
