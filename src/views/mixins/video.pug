@@ -1,4 +1,7 @@
 mixin video(info)  
     h4 
         a(href=`videos/${info.id}`)=info.title
-    li views: #{info.views}            
+    li Description: #{info.description}      
+    li hashtags: #{info.hashtags} 
+    li ratings: #{info.rating}
+    li Posted: #{info.createdAt}       
