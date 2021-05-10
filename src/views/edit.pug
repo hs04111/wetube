@@ -3,4 +3,6 @@ extends base.pug
 block content
     form(method="POST")
         input(placeholder="Change your video's title" value=video.title name="title" required)
+        input(placeholder="Description" name="description" required minlength=20 value=video.description)
+        input(placeholder="Hashtags separated by comma" name="hashtags" required value=video.hashtags.join())
         input(value="save" type="submit" )
