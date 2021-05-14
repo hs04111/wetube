@@ -6,11 +6,15 @@ export const postJoin = async (req, res) => {
     const exists = await User.exists({ $or: [{ username }, { email }] });
     if (password !== password2) {
         const errMessage = 'Password confirmation does not match';
-        return res.render('join', { pageTitle: 'Join', errMessage });
+        return res
+            .status(400)
+            .render('join', { pageTitle: 'Join', errMessage });
     }
     if (exists) {
         const errMessage = 'The username/email already exists';
-        return res.render('join', { pageTitle: 'Join', errMessage });
+        return res
+            .status(400)
+            .render('join', { pageTitle: 'Join', errMessage });
     }
     await User.create({
         name,
