@@ -17,11 +17,11 @@ app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: true })); // This makes app to understand the HTML Form
 app.use(
     session({
-        secret: 'Hello!',
+        secret: process.env.COOKIE_SECRET,
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: false, // if it is false, it only gives cookies when the sesssion is modified. we only modify session in Login.
         store: MongoStore.create({
-            mongoUrl: 'mongodb://127.0.0.1:27017/wetube'
+            mongoUrl: process.env.DB_URL
         })
     })
 );
