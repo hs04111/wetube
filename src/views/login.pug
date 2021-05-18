@@ -7,7 +7,11 @@ block content
         input(placeholder="Username", name="username", type="text", required)
         input(placeholder="Password", name="password", type="password", required)        
         input(type='submit' value="Log In")
+        br
+        a(href='https://github.com/login/oauth/authorize?client_id=1f5a736740c838d3240a&scope=read:user user:email') Continue with Github
     hr
+    
     div
         span Does not have an account? 
         a(href='/join') Join Here &rarr;
+    
