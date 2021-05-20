@@ -42,7 +42,7 @@ export const getLogin = (req, res) => {
 
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username, socialOnly: false });
     const pageTitle = 'Log In';
     if (!user) {
         return res.status(400).render('login', {
@@ -120,33 +120,35 @@ export const finishGithubLogin = async (req, res) => {
             (email) => email.primary === true && email.verified === true
         );
 
-        const existingUser = await User.findOne({ email: emailObj.email });
-        if (existingUser) {
-            req.session.loggedIn = true;
-            req.session.user = existingUser;
-            return res.redirect('/');
-        } else {
-            const user = await User.create({
+        let user = await User.findOne({ email: emailObj.email });
+        if (!user) {
+            user = await User.create({
                 name: userData.name ? userData.name : 'Unknown',
                 username: userData.login,
+                avatarUrl: userData.avatar_url
+                    ? userData.avatar_url
+                    : 'Unknown',
                 email: emailObj.email,
                 password: '',
                 socialOnly: true,
                 location: userData.location
             });
-            req.session.loggedIn = true;
-            req.session.user = user;
-            return res.redirect('/');
         }
+
+        req.session.loggedIn = true;
+        req.session.user = user;
+        return res.redirect('/');
     } else {
         return res.redirect('/login');
     }
 };
 
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect('/');
+};
 export const edit = (req, res) => res.send('Edit Here!');
 export const see = (req, res) => {
     console.log(req.params.id);
     res.send('See Users');
 };
-export const logout = (req, res) => res.send('Log Out');
-export const remove = (req, res) => res.send('Delete User');

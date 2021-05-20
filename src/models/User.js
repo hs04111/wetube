@@ -4,8 +4,9 @@ import bcrypt from 'bcrypt';
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     socialOnly: { type: Boolean, default: false },
+    avatarUrl: String,
     username: { type: String, required: true, unique: true },
-    password: { type: String },
+    password: { type: String }, // social login 하면 password가 없을 가능성
     name: { type: String, required: true },
     location: String
 });
