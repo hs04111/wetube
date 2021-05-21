@@ -1,7 +1,6 @@
 import User from '../models/User';
 import bcrypt from 'bcrypt';
 import fetch from 'node-fetch';
-import { get } from 'mongoose';
 
 export const getJoin = (req, res) => res.render('join', { pageTitle: 'Join' });
 export const postJoin = async (req, res) => {
@@ -147,7 +146,56 @@ export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect('/');
 };
-export const edit = (req, res) => res.send('Edit Here!');
+export const getEdit = (req, res) => {
+    res.render('edit-profile', { pageTitle: 'Edit Profile' });
+};
+
+export const postEdit = async (req, res) => {
+    const {
+        body: { name, email, username, location },
+        session: {
+            user: { _id }
+        }
+    } = req;
+    const sessionEmail = req.session.user.email;
+    const sessionUsername = req.session.user.username;
+
+    if (sessionEmail !== email) {
+        const emailExists = await User.exists({ email });
+        if (emailExists) {
+            const errMessage = 'The email already exists';
+            return res.status(400).render('edit-profile', {
+                pageTitle: 'Edit profile',
+                errMessage
+            });
+        }
+    }
+
+    if (sessionUsername !== username) {
+        const usernameExists = await User.exists({ username });
+        if (usernameExists) {
+            const errMessage = 'The username already exists';
+            return res.status(400).render('edit-profile', {
+                pageTitle: 'Edit profile',
+                errMessage
+            });
+        }
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+        _id,
+        {
+            name,
+            email,
+            username,
+            location
+        },
+        {
+            new: true
+        }
+    );
+    req.session.user = updatedUser;
+    return res.redirect('/users/edit');
+};
 export const see = (req, res) => {
     console.log(req.params.id);
     res.send('See Users');

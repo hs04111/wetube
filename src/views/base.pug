@@ -9,16 +9,16 @@ html(lang="ko")
             nav 
                 ul 
                     li 
-                        a(href="/") Home
-                    li 
-                        a(href="/videos/upload") Upload Video                    
+                        a(href="/") Home                                     
                     li 
                         a(href="/search") Search
                     if loggedIn
                         li 
+                            a(href='/users/edit') Edit #{loggedInUser.name}'s profile
+                        li 
                             a(href='/users/logout') Log Out 
                         li 
-                            a(href='/my-profile') #{loggedInUser.name}'s profile
+                            a(href="/videos/upload") Upload Video 
                 
                     else
                         li 
