@@ -155,9 +155,14 @@ export const postEdit = async (req, res) => {
     const {
         body: { name, email, username, location },
         session: {
-            user: { _id }
-        }
+            user: { _id, avatarUrl }
+        },
+        file
     } = req;
+
+    // 아래의 코드는  세션에 포함된 기존의 유저 정보와 form에서 온 정보를 비교하여 바뀐 것을 체크하여,
+    // 바뀐 것은 DB의 다른 유저 정보와 비교하여 중복이 없는지 체크한 후 저장하는 과정
+
     const sessionEmail = req.session.user.email;
     const sessionUsername = req.session.user.username;
 
@@ -186,14 +191,16 @@ export const postEdit = async (req, res) => {
         _id,
         {
             name,
+            avatarUrl: file ? file.path : avatarUrl, // 유저가 file을 update하는지 여부를 확인하는 코드.
             email,
             username,
             location
         },
         {
-            new: true
+            new: true // 이 옵션이 들어가지 않으면 findByIdAndUpdate가 업데이트된 user를 return하지 않아서, 아래 코드가 제대로 작동하지 않는다.
         }
     );
+
     req.session.user = updatedUser;
     return res.redirect('/users/edit');
 };
