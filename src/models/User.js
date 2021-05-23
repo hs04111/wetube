@@ -18,7 +18,10 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function () {
-    this.password = await bcrypt.hash(this.password, 5);
+    // isModified는 해당 항목이 수정되었을 때 true를 return한다.
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 5);
+    }
 }); // pre()는 User에 저장되는 모든 사항에 적용된다. 다만, findAndUpdate와 같은 사항에서는 적용되지 않는다.
 
 const User = mongoose.model('User', userSchema);

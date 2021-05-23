@@ -240,7 +240,7 @@ export const postChangePassword = async (req, res) => {
         });
     }
     user.password = newPassword;
-    user.save(); // 다만 기존의 pre에서 정의된 것 때문에 비밀번호가 다시 hash되어버린다. 해결할 것.
+    user.save(); // 다만 기존의 pre에서 정의된 것 때문에 비밀번호가 다시 hash되어버린다. pre에서 isModified를 사용.
     req.session.user.password = user.password;
     return res.redirect('/');
 };
