@@ -15,7 +15,7 @@ export const home = async (req, res) => {
 
 export const see = async (req, res) => {
     const { id } = req.params;
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate('owner'); // populate()를 하면 vidoe의 owner 자리에 해당 objectid를 가진 user의 정보가 그대로 들어간다.
 
     if (!video) {
         return res.status(404).render('404', { pageTitle: 'Video Not Found' });
