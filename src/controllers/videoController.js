@@ -1,4 +1,5 @@
 import Video from '../models/Video';
+import User from '../models/User';
 
 /*
 export const home = (req, res) => {
@@ -67,13 +68,16 @@ export const postUpload = async (req, res) => {
     const file = req.file;
 
     try {
-        await Video.create({
+        const newVideo = await Video.create({
             title,
             fileUrl: file.path,
             description,
             owner: _id,
             hashtags: Video.formatHashtags(hashtags)
         });
+        const user = await User.findById(_id);
+        user.videos.push(newVideo._id); // user.videos는 array이므로 push를 통해 추가한다.
+        user.save();
     } catch (error) {
         const errMessage = error._message;
         return res

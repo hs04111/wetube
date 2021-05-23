@@ -1,6 +1,10 @@
 extends ../base.pug
+include ../mixins/video
 
 
 block content 
-    h3=user.id 
-    h2=user._id
+    ul
+        each video in user.videos 
+            +video(video)
+        else 
+            li Sorry Nothing Found

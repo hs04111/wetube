@@ -240,14 +240,14 @@ export const postChangePassword = async (req, res) => {
         });
     }
     user.password = newPassword;
-    user.save();
+    user.save(); // 다만 기존의 pre에서 정의된 것 때문에 비밀번호가 다시 hash되어버린다. 해결할 것.
     req.session.user.password = user.password;
     return res.redirect('/');
 };
 
 export const see = async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate('videos'); // 마찬가지로 videos array에 있는 objectID를 모두 실제 db의 video로 바꾸어준다.
     if (!user) {
         return res.status(404).render('404', { pageTitle: 'User not found' });
     }

@@ -8,7 +8,13 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String }, // social login 하면 password가 없을 가능성
     name: { type: String, required: true },
-    location: String
+    location: String,
+    videos: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Video'
+        }
+    ]
 });
 
 userSchema.pre('save', async function () {
