@@ -23,6 +23,16 @@ export const publicOnlyMiddleware = (req, res, next) => {
     }
 }; // 로그인하지 않은 유저만 사용 가능한 페이지
 
-export const uplaodFiles = multer({
-    dest: 'uploads/' // destination을 uploads folder로 하여 여기에 파일 저장
+export const avatarUpload = multer({
+    dest: 'uploads/avatar/', // destination을 uploads/avatar folder로 하여 여기에 파일 저장
+    limits: {
+        fileSize: 3000000
+    }
+});
+
+export const videoUpload = multer({
+    dest: 'uploads/video/',
+    limits: {
+        fileSize: 100000000
+    }
 });

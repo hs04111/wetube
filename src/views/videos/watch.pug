@@ -2,12 +2,14 @@ extends ../base.pug
 
 
 block content 
+    video(src="/" + video.fileUrl, controls, width="500")
     div        
         p=video.description
         small=video.createdAt
         ul 
             each hashtag in video.hashtags 
                 li=hashtag
-    a(href=`${video.id}/edit`) Edit Video
-    br
-    a(href=`${video.id}/delete`) Delete Video
+    if String(loggedInUser._id) === String(video.owner)
+        a(href=`${video.id}/edit`) Edit Video
+        br
+        a(href=`${video.id}/delete`) Delete Video
