@@ -27,6 +27,7 @@ app.use(
 );
 app.use(localsMiddleware);
 app.use('/uploads', express.static('uploads')); // user avatarUrl의 path에 있는 파일을 express가 브라우저로 보낼 수 있도록 하는 middleware
+app.use('/static', express.static('assets')); // 폴더명과 url이 같을 필요는 없다.
 app.use('/', rootRouter);
 app.use('/videos', videoRouter);
 app.use('/users', userRouter);
