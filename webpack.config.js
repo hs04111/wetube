@@ -24,6 +24,10 @@ module.exports = {
                         ]
                     }
                 }
+            },
+            {
+                test: /\.scss$/,
+                use: ['style-loader', 'css-loader', 'sass-loader'] // 순서는 역순
             }
         ]
     }
@@ -36,3 +40,8 @@ module.exports = {
 // /\.js$/ = RegExp 정규표션식
 // 정규표현식에선 .가 분류 커맨드이므로 그냥 .을 쓸려면 \.을 해줘야 된다.
 // 따라서 \.js는 .js이다
+
+// css는 아래와 같은 3개의 loader가 필요하다. 각 loader를 구글링하여 설치한다.
+// sass-loader: Loads a Sass/SCSS file and compiles it to CSS.
+// css-loader: The css-loader interprets @import and url() like import/require() and will resolve them.
+// style-loader: Inject CSS into the DOM
