@@ -7,7 +7,8 @@
         "url": "git+https://github.com/hs04111/wetube.git"
     },
     "scripts": {
-        "dev": "nodemon --exec babel-node src/init.js"
+        "dev": "nodemon --exec babel-node src/init.js",
+        "assets": "webpack --config webpack.config.js"
     },
     "author": "hs04111",
     "license": "MIT",
@@ -31,12 +32,15 @@
         "@babel/core": "^7.13.16",
         "@babel/node": "^7.13.13",
         "@babel/preset-env": "^7.13.15",
+        "babel-loader": "^8.2.2",
         "eslint": "^7.25.0",
         "eslint-config-standard": "^16.0.2",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^4.3.1",
         "nodemon": "^2.0.7",
-        "prettier-eslint": "^12.0.0"
+        "prettier-eslint": "^12.0.0",
+        "webpack": "^5.37.1",
+        "webpack-cli": "^4.7.0"
     }
 }

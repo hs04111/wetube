@@ -12,8 +12,7 @@ const videoSchema = mongoose.Schema({
         ref: 'User'
     },
     meta: {
-        views: { type: Number, default: 0, required: true },
-        rating: { type: Number, default: 0, required: true }
+        views: { type: Number, default: 0, required: true }
     }
 });
 
