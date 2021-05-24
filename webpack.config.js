@@ -7,10 +7,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     entry: './src/client/js/main.js', // 바꾸고 싶은 최신문법의 javascript
     mode: 'development', // 개발로 모드를 설정하면 변환된 코드가 읽기 쉬운 편. 나중에는 생산 모드로 바꿔야 할 것.
+    watch: true, // true면 webpack이 항상 변화를 감지하여 변환한다.
     output: {
         // 변환된 호환성 좋은 javascript를 둘 곳
         filename: 'js/main.js',
-        path: path.resolve(__dirname, 'assets')
+        path: path.resolve(__dirname, 'assets'),
+        clean: true // webpack을 재시작하면 기존 파일을 지운다.
     },
     plugins: [
         new MiniCssExtractPlugin({
