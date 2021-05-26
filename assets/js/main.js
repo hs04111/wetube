@@ -16,7 +16,7 @@
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _scss_styles_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../scss/styles.scss */ \"./src/client/scss/styles.scss\");\n // 원래 Javascript에서 scss를 import하여 사용할 수 없지만, webpack이 바꾸어줄 것\n\nalert('it works!'); // 예시 코드 - 변환전\n\n//# sourceURL=webpack://wetube/./src/client/js/main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _scss_styles_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../scss/styles.scss */ \"./src/client/scss/styles.scss\");\n // 원래 Javascript에서 scss를 import하여 사용할 수 없지만, webpack이 바꾸어줄 것\n// 예시 코드 - 변환전\n\n//# sourceURL=webpack://wetube/./src/client/js/main.js?");
 
 /***/ }),
 

@@ -247,7 +247,13 @@ export const postChangePassword = async (req, res) => {
 
 export const see = async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(id).populate('videos'); // 마찬가지로 videos array에 있는 objectID를 모두 실제 db의 video로 바꾸어준다.
+    const user = await User.findById(id).populate({
+        path: 'videos',
+        populate: {
+            path: 'owner',
+            model: 'User'
+        }
+    }); // 마찬가지로 videos array에 있는 objectID를 모두 실제 db의 video로 바꾸어준다. 거기에 더하여, video의 owner까지 채운다.
     if (!user) {
         return res.status(404).render('404', { pageTitle: 'User not found' });
     }

@@ -10,7 +10,9 @@ export const home = (req, res) => {
 */
 
 export const home = async (req, res) => {
-    const videos = await Video.find({}).sort({ createdAt: 'desc' });
+    const videos = await Video.find({})
+        .sort({ createdAt: 'desc' })
+        .populate('owner');
     res.render('home', { pageTitle: 'Home!', videos });
 };
 
@@ -123,7 +125,7 @@ export const search = async (req, res) => {
     if (keyword) {
         videos = await Video.find({
             title: { $regex: new RegExp(keyword, 'i') }
-        });
+        }).populate('owner');
     }
     return res.render('videos/search', { pageTitle: 'Search', videos });
 };
