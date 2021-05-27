@@ -5,12 +5,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // path.resolve(__dirname)는 뒤에 ,로 이어진 경로를 합쳐준다.
 
 module.exports = {
-    entry: './src/client/js/main.js', // 바꾸고 싶은 최신문법의 javascript
+    entry: {
+        main: './src/client/js/main.js',
+        videoPlayer: './src/client/js/videoPlayer.js'
+    }, // 바꾸고 싶은 최신문법의 javascript
     mode: 'development', // 개발로 모드를 설정하면 변환된 코드가 읽기 쉬운 편. 나중에는 생산 모드로 바꿔야 할 것.
     watch: true, // true면 webpack이 항상 변화를 감지하여 변환한다.
     output: {
         // 변환된 호환성 좋은 javascript를 둘 곳
-        filename: 'js/main.js',
+        filename: 'js/[name].js', // [name]은 entry의 key값을 가져다가 쓴다.
         path: path.resolve(__dirname, 'assets'),
         clean: true // webpack을 재시작하면 기존 파일을 지운다.
     },

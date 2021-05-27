@@ -2,17 +2,26 @@ extends ../base.pug
 
 
 block content 
-    video(src="/" + video.fileUrl, controls, width="500")
-    div        
-        p=video.description
-        small=video.createdAt
-        br
-        small Uploaded by 
-            a(href=`/users/${video.owner._id}`)=video.owner.name
-        ul 
-            each hashtag in video.hashtags 
-                li=hashtag
-    if String(loggedInUser._id) === String(video.owner.id)
-        a(href=`${video.id}/edit`) Edit Video
-        br
-        a(href=`${video.id}/delete`) Delete Video
+    video(src="/" + video.fileUrl, controls, width="300")
+    div 
+        button#play Play 
+        button#mute Mute
+        span#time 00:00/00:00
+        input(type='range', step=0.1 min=0, max=1)#volume
+
+    //-
+        div        
+            p=video.description
+            small=video.createdAt
+            br
+            small Uploaded by 
+                a(href=`/users/${video.owner._id}`)=video.owner.name
+            ul 
+                each hashtag in video.hashtags 
+                    li=hashtag
+        if String(loggedInUser._id) === String(video.owner.id)
+            a(href=`${video.id}/edit`) Edit Video
+            br
+            a(href=`${video.id}/delete`) Delete Video
+block scripts 
+    script(src="/static/js/videoPlayer.js") 
