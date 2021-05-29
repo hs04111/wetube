@@ -1,8 +1,9 @@
 const video = document.querySelector('video');
 const playBtn = document.getElementById('play');
 const muteBtn = document.getElementById('mute');
-const time = document.getElementById('time');
 const volumeRange = document.getElementById('volume');
+const currentTime = document.getElementById('currentTime');
+const totalTime = document.getElementById('totalTime');
 
 // 대부분의 비디오 컨트롤은 HTML의 video element 부분을 참조하여 작성한다. 이는 MediaElement를 상속한 것이다. https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement
 
@@ -43,7 +44,17 @@ const handleVolumeChange = (event) => {
     video.volume = value;
 };
 
+const handleLoadedMetaData = () => {
+    totalTime.innerText = Math.floor(video.duration); // video의 properties 참조
+};
+
+const handleTimeUpdate = () => {
+    currentTime.innerText = Math.floor(video.currentTime); // video의 properties 참조
+};
+
 playBtn.addEventListener('click', handlePlayClick);
 muteBtn.addEventListener('click', handleMute);
 volumeRange.addEventListener('input', handleVolumeChange);
+video.addEventListener('loadedmetadata', handleLoadedMetaData);
+video.addEventListener('timeupdate', handleTimeUpdate);
 // video.addEventListener('play', handlePlay);  play와 pause에 대하여, video elemet의 event들을 참조할 것. https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement
