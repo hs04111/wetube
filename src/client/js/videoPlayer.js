@@ -2,13 +2,17 @@ const video = document.querySelector('video');
 const playBtn = document.getElementById('play');
 const muteBtn = document.getElementById('mute');
 const volumeRange = document.getElementById('volume');
-const timeRange = document.getElementById('time');
+const timeRange = document.getElementById('timeline');
 const currentTime = document.getElementById('currentTime');
 const totalTime = document.getElementById('totalTime');
+const fullscreenBtn = document.getElementById('fullscreen');
+const videoContainer = document.getElementById('videoContainer');
+const videoControls = document.getElementById('videoControls');
 
 // 대부분의 비디오 컨트롤은 HTML의 video element 부분을 참조하여 작성한다. 이는 MediaElement를 상속한 것이다. https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement
 
 let volumeValue = 0.5;
+let controlsTimeout = null;
 video.volume = volumeValue;
 
 const handlePlayClick = (e) => {
@@ -64,10 +68,38 @@ const handleTimeUpdate = () => {
     timeRange.value = video.currentTime / video.duration;
 };
 
+const handleFullscreen = () => {
+    const fullscreen = document.fullscreenElement; // 현재 document에 fullscreen인 element를 보여준다. 없으면 null.
+
+    if (fullscreen) {
+        document.exitFullscreen(); // document에서 가능하다는 것을 주의한다.
+        fullscreenBtn.innerText = 'Enter Full Screen';
+    } else {
+        videoContainer.requestFullscreen();
+        fullscreenBtn.innerText = 'Exit Full Screen';
+    }
+};
+
+const handleMouseMove = () => {
+    if (controlsTimeout) {
+        clearTimeout(controlsTimeout);
+    }
+    videoControls.classList.add('showing');
+};
+
+const handleMouseLeave = () => {
+    controlsTimeout = setTimeout(() => {
+        videoControls.classList.remove('showing');
+    }, 3000);
+};
+
 playBtn.addEventListener('click', handlePlayClick);
 muteBtn.addEventListener('click', handleMute);
 volumeRange.addEventListener('input', handleVolumeChange);
 video.addEventListener('loadedmetadata', handleLoadedMetaData);
 video.addEventListener('timeupdate', handleTimeUpdate);
 timeRange.addEventListener('input', handleTimeChange);
+fullscreenBtn.addEventListener('click', handleFullscreen);
+video.addEventListener('mousemove', handleMouseMove);
+video.addEventListener('mouseleave', handleMouseLeave);
 // video.addEventListener('play', handlePlay);  play와 pause에 대하여, video elemet의 event들을 참조할 것. https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement
