@@ -1,11 +1,14 @@
 const video = document.querySelector('video');
 const playBtn = document.getElementById('play');
+const playBtnIcon = playBtn.querySelector('i');
 const muteBtn = document.getElementById('mute');
+const muteBtnIcon = muteBtn.querySelector('i');
 const volumeRange = document.getElementById('volume');
 const timeRange = document.getElementById('timeline');
 const currentTime = document.getElementById('currentTime');
 const totalTime = document.getElementById('totalTime');
-const fullscreenBtn = document.getElementById('fullscreen');
+const fullScreenBtn = document.getElementById('fullscreen');
+const fullScreenIcon = fullScreenBtn.querySelector('i');
 const videoContainer = document.getElementById('videoContainer');
 const videoControls = document.getElementById('videoControls');
 
@@ -24,7 +27,13 @@ const handlePlayClick = (e) => {
         video.pause();
     }
 
-    playBtn.innerText = video.paused ? 'Play' : 'Pause';
+    playBtnIcon.classList = video.paused ? 'fas fa-play' : 'fas fa-pause';
+};
+
+const handleKeyPush = (event) => {
+    if (event.keyCode === 32) {
+        handlePlayClick();
+    }
 };
 
 const handleMute = (e) => {
@@ -35,7 +44,9 @@ const handleMute = (e) => {
     }
 
     volumeRange.value = video.muted ? 0 : volumeValue;
-    muteBtn.innerText = video.muted ? 'Unmute' : 'Mute';
+    muteBtnIcon.classList = video.muted
+        ? 'fas fa-volume-mute'
+        : 'fas fa-volume-up';
 };
 
 const handleVolumeChange = (event) => {
@@ -58,7 +69,7 @@ const handleTimeChange = (event) => {
 };
 
 const formatTime = (seconds) =>
-    new Date(seconds * 1000).toISOString().substr(11, 8);
+    new Date(seconds * 1000).toISOString().substr(14, 5);
 
 const handleLoadedMetaData = () => {
     totalTime.innerText = formatTime(Math.floor(video.duration)); // video의 properties 참조
@@ -74,10 +85,10 @@ const handleFullscreen = () => {
 
     if (fullscreen) {
         document.exitFullscreen(); // document에서 가능하다는 것을 주의한다.
-        fullscreenBtn.innerText = 'Enter Full Screen';
+        fullScreenIcon.classList = 'fas fa-expand';
     } else {
         videoContainer.requestFullscreen();
-        fullscreenBtn.innerText = 'Exit Full Screen';
+        fullScreenIcon.classList = 'fas fa-compress';
     }
 };
 
@@ -98,13 +109,15 @@ const handleMouseLeave = () => {
     controlsTimeout = setTimeout(hideControls, 3000);
 };
 
+document.body.onkeyup = handleKeyPush;
 playBtn.addEventListener('click', handlePlayClick);
 muteBtn.addEventListener('click', handleMute);
 volumeRange.addEventListener('input', handleVolumeChange);
 video.addEventListener('loadedmetadata', handleLoadedMetaData);
 video.addEventListener('timeupdate', handleTimeUpdate);
+video.addEventListener('click', handlePlayClick);
 timeRange.addEventListener('input', handleTimeChange);
-fullscreenBtn.addEventListener('click', handleFullscreen);
-video.addEventListener('mousemove', handleMouseMove);
-video.addEventListener('mouseleave', handleMouseLeave);
+fullScreenBtn.addEventListener('click', handleFullscreen);
+videoContainer.addEventListener('mousemove', handleMouseMove);
+videoContainer.addEventListener('mouseleave', handleMouseLeave);
 // video.addEventListener('play', handlePlay);  play와 pause에 대하여, video elemet의 event들을 참조할 것. https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement
