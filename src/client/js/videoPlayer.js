@@ -2,6 +2,7 @@ const video = document.querySelector('video');
 const playBtn = document.getElementById('play');
 const muteBtn = document.getElementById('mute');
 const volumeRange = document.getElementById('volume');
+const timeRange = document.getElementById('time');
 const currentTime = document.getElementById('currentTime');
 const totalTime = document.getElementById('totalTime');
 
@@ -44,12 +45,23 @@ const handleVolumeChange = (event) => {
     video.volume = value;
 };
 
+const handleTimeChange = (event) => {
+    const {
+        target: { value }
+    } = event;
+    video.currentTime = value * video.duration; // video.currentTime이 read only가 아니기 때문에 이렇게 자바스크립트에서 변경이 가능.
+};
+
+const formatTime = (seconds) =>
+    new Date(seconds * 1000).toISOString().substr(11, 8);
+
 const handleLoadedMetaData = () => {
-    totalTime.innerText = Math.floor(video.duration); // video의 properties 참조
+    totalTime.innerText = formatTime(Math.floor(video.duration)); // video의 properties 참조
 };
 
 const handleTimeUpdate = () => {
-    currentTime.innerText = Math.floor(video.currentTime); // video의 properties 참조
+    currentTime.innerText = formatTime(Math.floor(video.currentTime)); // video의 properties 참조
+    timeRange.value = video.currentTime / video.duration;
 };
 
 playBtn.addEventListener('click', handlePlayClick);
@@ -57,4 +69,5 @@ muteBtn.addEventListener('click', handleMute);
 volumeRange.addEventListener('input', handleVolumeChange);
 video.addEventListener('loadedmetadata', handleLoadedMetaData);
 video.addEventListener('timeupdate', handleTimeUpdate);
+timeRange.addEventListener('input', handleTimeChange);
 // video.addEventListener('play', handlePlay);  play와 pause에 대하여, video elemet의 event들을 참조할 것. https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement
