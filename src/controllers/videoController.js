@@ -129,3 +129,14 @@ export const search = async (req, res) => {
     }
     return res.render('videos/search', { pageTitle: 'Search', videos });
 };
+
+export const registerView = async (req, res) => {
+    const { id } = req.params;
+    const video = await Video.findById(id);
+    if (!video) {
+        return res.sendStatus(404); // sendStatus를 사용해야 연결이 끝난다. status는 단순히 상태코드를 덧붙이는 것.
+    }
+    video.meta.views = video.meta.views + 1;
+    await video.save();
+    return res.sendStatus(200);
+};

@@ -5,6 +5,7 @@ import MongoStore from 'connect-mongo'; // session의 데이터를 저장할 수
 import userRouter from './routers/userRouter';
 import rootRouter from './routers/rootRouter';
 import videoRouter from './routers/videoRouter';
+import apiRouter from './routers/apiRouter';
 import { localsMiddleware } from './middlewares';
 
 const logger = morgan('dev'); // dev 말고도 많은 방식으로 logging을 할 수 있다.
@@ -31,5 +32,6 @@ app.use('/static', express.static('assets')); // 폴더명과 url이 같을 필�
 app.use('/', rootRouter);
 app.use('/videos', videoRouter);
 app.use('/users', userRouter);
+app.use('/api', apiRouter);
 
 export default app;

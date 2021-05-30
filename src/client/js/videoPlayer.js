@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 const video = document.querySelector('video');
 const playBtn = document.getElementById('play');
 const playBtnIcon = playBtn.querySelector('i');
@@ -31,6 +33,7 @@ const handlePlayClick = (e) => {
 };
 
 const handleKeyPush = (event) => {
+    event.preventDefault();
     if (event.keyCode === 32) {
         handlePlayClick();
     }
@@ -109,6 +112,13 @@ const handleMouseLeave = () => {
     controlsTimeout = setTimeout(hideControls, 3000);
 };
 
+const handleEnded = () => {
+    const { id } = videoContainer.dataset; // HTML attribute 중 data를 이용하여 backend가 남긴 data를 frontend로 가져오는 방법. https://developer.mozilla.org/ko/docs/Learn/HTML/Howto/Use_data_attributes
+    fetch(`/api/videos/${id}/views`, {
+        method: 'POST'
+    });
+};
+
 document.body.onkeyup = handleKeyPush;
 playBtn.addEventListener('click', handlePlayClick);
 muteBtn.addEventListener('click', handleMute);
@@ -116,6 +126,7 @@ volumeRange.addEventListener('input', handleVolumeChange);
 video.addEventListener('loadedmetadata', handleLoadedMetaData);
 video.addEventListener('timeupdate', handleTimeUpdate);
 video.addEventListener('click', handlePlayClick);
+video.addEventListener('ended', handleEnded);
 timeRange.addEventListener('input', handleTimeChange);
 fullScreenBtn.addEventListener('click', handleFullscreen);
 videoContainer.addEventListener('mousemove', handleMouseMove);
