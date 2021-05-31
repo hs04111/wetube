@@ -7,7 +7,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     entry: {
         main: './src/client/js/main.js',
-        videoPlayer: './src/client/js/videoPlayer.js'
+        videoPlayer: './src/client/js/videoPlayer.js',
+        recorder: './src/client/js/recorder.js'
     }, // 바꾸고 싶은 최신문법의 javascript
     mode: 'development', // 개발로 모드를 설정하면 변환된 코드가 읽기 쉬운 편. 나중에는 생산 모드로 바꿔야 할 것.
     watch: true, // true면 webpack이 항상 변화를 감지하여 변환한다.
