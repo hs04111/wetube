@@ -25,6 +25,12 @@ videoRouter
     .route('/upload')
     .all(protectorMiddleware)
     .get(getUpload)
-    .post(videoUpload.single('video'), postUpload);
+    .post(
+        videoUpload.fields([
+            { name: 'video', maxCount: 1 },
+            { name: 'thumb', maxCount: 1 }
+        ]),
+        postUpload
+    ); //  single이 아닌 fields를 이용하여 하나의 form에서 다양한 file을 받는다.
 
 export default videoRouter;
