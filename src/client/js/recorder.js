@@ -1,64 +1,78 @@
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
-const startBtn = document.getElementById('startBtn');
+const actionBtn = document.getElementById('actionBtn');
 const video = document.getElementById('preview');
 
 let stream;
 let recorder;
 let videoUrl;
 
+const files = {
+    input: 'Video.webm',
+    output: 'output.mp4',
+    thumb: 'thumbnail.jpg'
+};
+
+const downloadFile = (fileUrl, fileName) => {
+    const a = document.createElement('a');
+    a.href = fileUrl;
+    a.download = fileName;
+    a.click();
+};
+
 const handleDownload = async () => {
+    actionBtn.removeEventListener('click', handleDownload);
+    actionBtn.disabled = true;
+    actionBtn.innerText = 'Transcoding...';
+
     const ffmpeg = createFFmpeg({ log: true });
     await ffmpeg.load();
-    ffmpeg.FS('writeFile', 'Video.webm', await fetchFile(videoUrl));
-    await ffmpeg.run('-i', 'Video.webm', '-r', '60', 'output.mp4');
+    ffmpeg.FS('writeFile', files.input, await fetchFile(videoUrl));
+    await ffmpeg.run('-i', files.input, '-r', '60', files.output);
     await ffmpeg.run(
         '-i',
-        'Video.webm',
+        files.input,
         '-ss',
         '00:00:01',
         '-frames:v',
         '1',
-        'thumbnail.jpg'
+        files.thumb
     );
 
-    const mp4File = ffmpeg.FS('readFile', 'output.mp4');
-    const thumbFile = ffmpeg.FS('readFile', 'thumbnail.jpg');
+    const mp4File = ffmpeg.FS('readFile', files.output);
+    const thumbFile = ffmpeg.FS('readFile', files.thumb);
     const mp4Blob = new Blob([mp4File.buffer], { type: 'video/mp4' });
     const thumbBlob = new Blob([thumbFile.buffer], { type: 'image/jpg' });
     const mp4Url = URL.createObjectURL(mp4Blob);
     const thumbUrl = URL.createObjectURL(thumbBlob);
 
-    const a = document.createElement('a');
-    a.href = mp4Url;
-    a.download = 'Video.mp4';
-    a.click();
+    downloadFile(mp4Url, 'Video.mp4');
+    downloadFile(thumbUrl, 'MyThumbnail.jpg');
 
-    const thumbA = document.createElement('a');
-    thumbA.href = thumbUrl;
-    thumbA.download = 'MyThumbnail.jpg';
-    thumbA.click();
-
-    ffmpeg.FS('unlink', 'Video.webm');
-    ffmpeg.FS('unlink', 'output.mp4');
-    ffmpeg.FS('unlink', 'thumbnail.jpg');
+    ffmpeg.FS('unlink', files.input);
+    ffmpeg.FS('unlink', files.output);
+    ffmpeg.FS('unlink', files.thumb);
 
     URL.revokeObjectURL(videoUrl);
     URL.revokeObjectURL(mp4Url);
     URL.revokeObjectURL(thumbUrl);
+
+    actionBtn.addEventListener('click', handleStart);
+    actionBtn.disabled = false;
+    actionBtn.innerText = 'Record again';
 };
 
 const handleStop = () => {
-    startBtn.innerText = 'Download';
-    startBtn.removeEventListener('click', handleStop);
-    startBtn.addEventListener('click', handleDownload);
+    actionBtn.innerText = 'Download';
+    actionBtn.removeEventListener('click', handleStop);
+    actionBtn.addEventListener('click', handleDownload);
     recorder.stop();
 };
 
 const handleStart = () => {
-    startBtn.innerText = 'Stop Recording';
-    startBtn.removeEventListener('click', handleStart);
-    startBtn.addEventListener('click', handleStop);
+    actionBtn.innerText = 'Stop Recording';
+    actionBtn.removeEventListener('click', handleStart);
+    actionBtn.addEventListener('click', handleStop);
 
     recorder = new MediaRecorder(stream); // 녹화를 시작한다. Method와 event handler에서 아래 코드를 찾아볼 수 있다. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
     recorder.ondataavailable = (event) => {
@@ -83,4 +97,4 @@ const init = async () => {
 
 init();
 
-startBtn.addEventListener('click', handleStart);
+actionBtn.addEventListener('click', handleStart);
