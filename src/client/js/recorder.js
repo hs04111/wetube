@@ -79,6 +79,7 @@ const handleStart = () => {
 
     recorder = new MediaRecorder(stream); // 녹화를 시작한다. Method와 event handler에서 아래 코드를 찾아볼 수 있다. https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
     recorder.ondataavailable = (event) => {
+        // 해당 이벤트는 stop()이 발생한 후 이어진다.
         videoUrl = URL.createObjectURL(event.data);
         video.srcObject = null;
         video.src = videoUrl;

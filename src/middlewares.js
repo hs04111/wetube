@@ -11,6 +11,7 @@ export const protectorMiddleware = (req, res, next) => {
     if (req.session.loggedIn) {
         return next();
     } else {
+        req.flash('error', 'Not authorized');
         return res.redirect('/login');
     }
 }; // 로그인한 유저만 사용 가능한 페이지
@@ -19,6 +20,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
     if (!req.session.loggedIn) {
         return next();
     } else {
+        req.flash('error', 'Not authorized');
         return res.redirect('/');
     }
 }; // 로그인하지 않은 유저만 사용 가능한 페이지

@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 
 export const getJoin = (req, res) =>
     res.render('users/join', { pageTitle: 'Join' });
+
 export const postJoin = async (req, res) => {
     const { name, email, password, password2, location, username } = req.body;
     const exists = await User.exists({ $or: [{ username }, { email }] });
@@ -36,6 +37,7 @@ export const postJoin = async (req, res) => {
 
     res.redirect('/login');
 };
+
 export const getLogin = (req, res) => {
     res.render('users/login', { pageTitle: 'Log In' });
 };
@@ -145,8 +147,10 @@ export const finishGithubLogin = async (req, res) => {
 
 export const logout = (req, res) => {
     req.session.destroy();
+    req.flash('info', 'Bye Bye');
     return res.redirect('/');
 };
+
 export const getEdit = (req, res) => {
     res.render('users/edit-profile', { pageTitle: 'Edit Profile' });
 };
@@ -207,6 +211,7 @@ export const postEdit = async (req, res) => {
 
 export const getChangePassword = (req, res) => {
     if (req.session.user.socialOnly) {
+        req.flash('error', 'Can not change password');
         return res.redirect('/');
     }
     return res.render('users/change-password', {
@@ -242,6 +247,7 @@ export const postChangePassword = async (req, res) => {
     user.password = newPassword;
     user.save(); // 다만 기존의 pre에서 정의된 것 때문에 비밀번호가 다시 hash되어버린다. pre에서 isModified를 사용.
     req.session.user.password = user.password;
+    req.flash('info', 'Password updated');
     return res.redirect('/');
 };
 
