@@ -166,5 +166,24 @@ export const createComment = async (req, res) => {
 
     video.comments.push(comment._id); // SQL DB에서와는 달리, 관계가 있는 다른 model에 데이터를 일일히 직접 넣어줘야 한다. 만약 user의 comment들도 하고 싶다면 같은 방법으로 한다.
     video.save();
-    return res.sendStatus(201);
+    // response에 json의 형식으로 comment의 id를 보내주는 법.
+    return res.status(201).json({ newCommentId: comment._id });
+};
+
+export const deleteComment = async (req, res) => {
+    const { videoId, commentId } = req.params;
+    const comment = await Comment.findById(commentId);
+    const video = await Video.findById(videoId);
+    if (!comment) {
+        return res.sendStatus(404);
+    }
+
+    if (String(req.session.user._id) !== String(comment.owner)) {
+        return res.sendStatus(404);
+    }
+    video.comments.remove(commentId);
+    video.save();
+    await Comment.findByIdAndDelete(commentId);
+
+    return res.sendStatus(200);
 };
