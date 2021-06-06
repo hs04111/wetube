@@ -1,5 +1,6 @@
 import Video from '../models/Video';
 import User from '../models/User';
+import Comment from '../models/Comment';
 
 /*
 export const home = (req, res) => {
@@ -136,9 +137,30 @@ export const registerView = async (req, res) => {
     const { id } = req.params;
     const video = await Video.findById(id);
     if (!video) {
-        return res.sendStatus(404); // sendStatus를 사용해야 연결이 끝난다. status는 단순히 상태코드를 덧붙이는 것.
+        return res.sendStatus(404); // api controller에서는 sendStatus를 사용해야 연결이 끝난다. status는 단순히 상태코드를 덧붙이는 것.
     }
     video.meta.views = video.meta.views + 1;
     await video.save();
     return res.sendStatus(200);
+};
+
+export const createComment = async (req, res) => {
+    const {
+        body: { text },
+        params: { id },
+        session: { user }
+    } = req;
+
+    const video = await Video.findById(id);
+    if (!video) {
+        return res.sendStatus(404);
+    }
+
+    const comment = await Comment.create({
+        owner: user._id,
+        text,
+        video: id
+    });
+
+    return res.sendStatus(201);
 };

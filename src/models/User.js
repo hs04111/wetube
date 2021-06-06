@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema({
     password: { type: String }, // social login 하면 password가 없을 가능성
     name: { type: String, required: true },
     location: String,
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ], // 두 모델간의 관계는 양쪽 모델에서 지정해야 하며, 일대다 관계의 경우 한쪽에서는 array로 표현한다.
     videos: [
         {
             type: mongoose.Schema.Types.ObjectId,

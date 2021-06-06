@@ -17,6 +17,7 @@ app.set('views', process.cwd() + '/src/views'); // template file을 저장할 �
 app.set('view engine', 'pug');
 
 app.use(express.urlencoded({ extended: true })); // This makes app to understand the HTML Form
+app.use(express.json()); // 이 미들웨어는 프론트엔드로부터 json.stringify된 데이터가 오면 parse해주는 역할을 한다. text만 받으려면 text()도 사용하지만, 이는 정말 text 하나만 왔을 때만 사용한다.
 app.use(
     session({
         secret: process.env.COOKIE_SECRET,

@@ -12,6 +12,12 @@ const videoSchema = mongoose.Schema({
         required: true,
         ref: 'User'
     },
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ], // 두 모델간의 관계는 양쪽 모델에서 지정해야 하며, 일대다 관계의 경우 한쪽에서는 array로 표현한다.
     meta: {
         views: { type: Number, default: 0, required: true }
     }

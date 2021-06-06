@@ -4,11 +4,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // __dirname은 현재 디렉토리의 주소를 보여준다
 // path.resolve(__dirname)는 뒤에 ,로 이어진 경로를 합쳐준다.
 
+const BASE_JS = './src/client/js/';
+
 module.exports = {
     entry: {
-        main: './src/client/js/main.js',
-        videoPlayer: './src/client/js/videoPlayer.js',
-        recorder: './src/client/js/recorder.js'
+        main: BASE_JS + 'main.js',
+        videoPlayer: BASE_JS + 'videoPlayer.js',
+        recorder: BASE_JS + 'recorder.js',
+        commentSection: BASE_JS + 'commentSection.js'
     }, // 바꾸고 싶은 최신문법의 javascript
     mode: 'development', // 개발로 모드를 설정하면 변환된 코드가 읽기 쉬운 편. 나중에는 생산 모드로 바꿔야 할 것.
     watch: true, // true면 webpack이 항상 변화를 감지하여 변환한다.

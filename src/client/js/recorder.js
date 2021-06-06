@@ -73,7 +73,7 @@ const handleDownload = async () => {
 };
 
 const handleStart = () => {
-    actionBtn.innerText = 'Recording';
+    actionBtn.innerText = 'Recording for 5 seconds...';
     actionBtn.disabled = true;
     actionBtn.removeEventListener('click', handleStart);
 
