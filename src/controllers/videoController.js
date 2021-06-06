@@ -19,7 +19,9 @@ export const home = async (req, res) => {
 
 export const see = async (req, res) => {
     const { id } = req.params;
-    const video = await Video.findById(id).populate('owner'); // populate()를 하면 vidoe의 owner 자리에 해당 objectid를 가진 user의 정보가 그대로 들어간다.
+    const video = await Video.findById(id)
+        .populate('owner')
+        .populate('comments'); // populate()를 하면 vidoe의 owner, comments 자리에 해당 objectid를 가진 user의 정보가 그대로 들어간다.
 
     if (!video) {
         return res.status(404).render('404', { pageTitle: 'Video Not Found' });
@@ -162,5 +164,7 @@ export const createComment = async (req, res) => {
         video: id
     });
 
+    video.comments.push(comment._id); // SQL DB에서와는 달리, 관계가 있는 다른 model에 데이터를 일일히 직접 넣어줘야 한다. 만약 user의 comment들도 하고 싶다면 같은 방법으로 한다.
+    video.save();
     return res.sendStatus(201);
 };
