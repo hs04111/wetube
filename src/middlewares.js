@@ -1,4 +1,19 @@
 import multer from 'multer'; // form에서 file을 받아 저장하고, req.file에 포함시키는 middleware
+import multerS3 from 'multer-s3';
+import aws from 'aws-sdk';
+
+const s3 = new aws.S3({
+    credentials: {
+        accessKeyId: process.env.AWS_ID,
+        secretAccessKey: process.env.AWS_SECRET
+    }
+});
+
+const multerUploader = multerS3({
+    s3: s3,
+    bucket: 'wetube-challenge-2021',
+    acl: 'public-read'
+});
 
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = 'Wetube';
@@ -29,12 +44,14 @@ export const avatarUpload = multer({
     dest: 'uploads/avatar/', // destination을 uploads/avatar folder로 하여 여기에 파일 저장
     limits: {
         fileSize: 3000000
-    }
+    },
+    storage: multerUploader
 });
 
 export const videoUpload = multer({
     dest: 'uploads/video/',
     limits: {
         fileSize: 100000000
-    }
+    },
+    storage: multerUploader
 });
