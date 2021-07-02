@@ -85,12 +85,13 @@ export const postUpload = async (req, res) => {
     const { user: _id } = req.session;
     const { title, description, hashtags } = req.body;
     const { video, thumb } = req.files; // router의 multer middleware에서 fields로 받으면 file이 아닌 files로 받아야 한다.
+    const isHeroku = process.env.NODE_ENV === 'production';
 
     try {
         const newVideo = await Video.create({
             title,
-            fileUrl: video[0].location,
-            thumbUrl: thumb[0].location,
+            fileUrl: isHeroku ? video[0].location : video[0].path,
+            thumbUrl: isHeroku ? thumb[0].location : thumb[0].path,
             description,
             owner: _id,
             hashtags: Video.formatHashtags(hashtags)

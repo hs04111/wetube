@@ -191,11 +191,14 @@ export const postEdit = async (req, res) => {
             });
         }
     }
+
+    const isHeroku = process.env.NODE_ENV === 'production';
+
     const updatedUser = await User.findByIdAndUpdate(
         _id,
         {
             name,
-            avatarUrl: file ? file.location : avatarUrl, // 유저가 file을 update하는지 여부를 확인하는 코드.
+            avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl, // 유저가 file을 update하는지 여부를 확인하는 코드.
             email,
             username,
             location
